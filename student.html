@@ -6,82 +6,82 @@
     <title>Teachify - Students</title>
     <link rel="stylesheet" href="style1.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sentiment/5.0.2/sentiment.min.js"></script>
     <style>
-        body, html {
-            height: 100%;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #f4f4f4;
-        }
+       /* Make the body take up full height */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f4f4f4;
+}
 
-        .form-section {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            gap: 20px;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            width: 80%;
-            max-width: 800px;
-            margin-top: 50px;
-        }
+/* Styling for the form section */
+.form-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    width: 80%;
+    max-width: 800px;
+    margin-top: 400px; /* Adds 100px space from the top */
+}
 
-        .feedback-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            width: 100%;
-        }
 
-        .feedback-form label {
-            font-size: 16px;
-            font-weight: bold;
-            color: #333;
-        }
+/* Styling for the feedback form */
+.feedback-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
 
-        .feedback-form select,
-        .feedback-form input,
-        .feedback-form textarea {
-            padding: 10px;
-            font-size: 14px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            width: 100%;
-        }
+/* Label styling */
+.feedback-form label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
 
-        .button {
-            background-color: #4CAF50;
-            color: white;
-            font-size: 14px;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+/* Input and select field styling */
+.feedback-form select,
+.feedback-form input,
+.feedback-form textarea {
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%;
+}
 
-        .button:hover {
-            background-color: #45a049;
-        }
+/* Button styling */
+.button {
+    background-color: #4CAF50;
+    color: white;
+    font-size: 14px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
 
-        .sentiment-result {
-            font-size: 16px;
-            font-weight: bold;
-            color: #333;
-            margin-top: 10px;
-            text-align: center;
-        }
+/* Hover effect for button */
+.button:hover {
+    background-color: #45a049;
+}
+
     </style>
 </head>
 <body>
 
-<header>
+  <header>
     <nav class="navbar">
         <h2 class="logo"><a href="#">TEACHIFY</a></h2>
         <input type="checkbox" id="menu-toggler">
@@ -97,94 +97,93 @@
     </nav>
 </header>
 
-<main class="section-container">
-    <section class="form-section">
-        <h3>Provide Your Feedback</h3>
-        <form class="feedback-form" id="feedback-form">
-            
-            <!-- Mode of Teaching -->
-            <label for="modeOfTeaching">Please select the mode of teaching:</label>
-            <select id="modeOfTeaching" name="modeOfTeaching">
-                <option value="online">Online</option>
-                <option value="offline">Offline</option>
-                <option value="hybrid">Hybrid</option>
-                <option value="self-paced">Self-paced</option>
-                <option value="flipped">Flipped</option>
-                <option value="one-on-one">One-on-one</option>
-                <option value="group">Group</option>
-            </select>
+    <main class="section-container">
+        <!-- Feedback Form Section -->
+        <section class="form-section">
+            <h3>Provide Your Feedback</h3>
+            <form class="feedback-form" action="#" method="POST">
+                <label for="modeOfTeaching">Please select the mode of teaching:</label>
+                <select id="modeOfTeaching" name="modeOfTeaching">
+                    <option value="online">Online</option>
+                    <option value="offline">Offline</option>
+                    <option value="hybrid">Hybrid</option>
+                    <option value="self-paced">Self-paced</option>
+                    <option value="flipped">Flipped</option>
+                    <option value="one-on-one">One-on-one</option>
+                    <option value="group">Group</option>
+                </select>
 
-            <!-- Subject -->
-            <label for="subject">Please mention the subject taught:</label>
-            <input type="text" id="subject" name="subject" required>
+                <label for="subject">Please mention the subject taught:</label>
+                <input type="text" id="subject" name="subject" required>
 
-            <!-- Teacher's Clarity -->
-            <label>How clear was the teacher's explanation?</label>
-            <select id="clarity" name="clarity">
-                <option value="very_clear">Very Clear</option>
-                <option value="somewhat_clear">Somewhat Clear</option>
-                <option value="neutral">Neutral</option>
-                <option value="somewhat_unclear">Somewhat Unclear</option>
-                <option value="very_unclear">Very Unclear</option>
-            </select>
+                <label for="clarity">How would you rate the clarity of explanations?</label>
+                <input type="number" id="clarity" name="clarity" min="1" max="5" required>
 
-            <!-- Engagement Level -->
-            <label>How engaging was the teaching method?</label>
-            <select id="engagement" name="engagement">
-                <option value="very_engaging">Very Engaging</option>
-                <option value="somewhat_engaging">Somewhat Engaging</option>
-                <option value="neutral">Neutral</option>
-                <option value="somewhat_boring">Somewhat Boring</option>
-                <option value="very_boring">Very Boring</option>
-            </select>
+                <label for="practicalLearning">How useful was the practical learning component?</label>
+                <input type="number" id="practicalLearning" name="practicalLearning" min="1" max="5" required>
 
-            <!-- Pace of Teaching -->
-            <label>Was the pace of teaching appropriate?</label>
-            <select id="pace" name="pace">
-                <option value="too_slow">Too Slow</option>
-                <option value="just_right">Just Right</option>
-                <option value="too_fast">Too Fast</option>
-            </select>
+                <label for="overallRatings">How would you rate the overall teaching experience?</label>
+                <input type="number" id="overallRatings" name="overallRatings" min="1" max="5" required>
 
-            <!-- Student Interaction -->
-            <label>Did the teacher encourage student interaction?</label>
-            <input type="radio" id="interaction_yes" name="interaction" value="yes">
-            <label for="interaction_yes">Yes</label>
-            <input type="radio" id="interaction_no" name="interaction" value="no">
-            <label for="interaction_no">No</label>
+                <label for="speed">How would you rate the speed of the lessons?</label>
+                <input type="number" id="speed" name="speed" min="1" max="5" required>
 
-            <!-- Overall Written Feedback -->
-            <label for="writtenFeedback">Please provide your overall written feedback:</label>
-            <textarea id="writtenFeedback" name="writtenFeedback" rows="4" required></textarea>
+                <label for="writtenFeedback">Please provide your overall written feedback:</label>
+                <textarea id="writtenFeedback" name="writtenFeedback" rows="4" required></textarea>
 
-            <button type="submit" class="button">Submit Feedback</button>
-        </form>
-
-        <div class="sentiment-result" id="sentiment-result"></div>
-    </section>
-</main>
-
-<script>
-    document.getElementById("feedback-form").addEventListener("submit", function(event) {
-        event.preventDefault();
-
-        const feedbackText = document.getElementById("writtenFeedback").value;
-        const sentiment = new Sentiment();
-        const result = sentiment.analyze(feedbackText);
-        const score = result.score;
-
-        let sentimentText = "";
-        if (score > 0) {
-            sentimentText = "😊 Positive Sentiment!";
-        } else if (score < 0) {
-            sentimentText = "😠 Negative Sentiment!";
-        } else {
-            sentimentText = "😐 Neutral Sentiment.";
-        }
-
-        document.getElementById("sentiment-result").innerText = sentimentText;
-    });
-</script>
-
+                <button type="submit" class="button">Submit Feedback</button>
+            </form>
+        </section>
+    </main>
+    <script>
+      // Function to collect form data and create CSV file
+      function generateCSV() {
+          // Get form elements
+          const modeOfTeaching = document.getElementById("mode-of-teaching").value;
+          const subject = document.getElementById("subject").value;
+          const clarity = document.getElementById("clarity").value;
+          const practicalLearning = document.getElementById("practical-learning").value;
+          const overallRating = document.getElementById("overall-rating").value;
+          const speed = document.getElementById("speed").value;
+          const feedback = document.getElementById("feedback").value;
+  
+          // Prepare the CSV data
+          const csvData = [
+              ["Mode of Teaching", "Subject", "Clarity", "Practical Learning", "Overall Rating", "Speed", "Feedback"], // Headers
+              [modeOfTeaching, subject, clarity, practicalLearning, overallRating, speed, feedback] // Data from the form
+          ];
+  
+          // Convert the data into CSV format
+          let csvContent = "";
+          csvData.forEach((rowArray) => {
+              let row = rowArray.join(","); // Join each row's data with commas
+              csvContent += row + "\n"; // Add newline after each row
+          });
+  
+          // Create a Blob from the CSV content
+          const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  
+          // Create an anchor element to trigger the download
+          const link = document.createElement("a");
+          if (link.download !== undefined) { // If the browser supports the download attribute
+              // Create a URL for the Blob
+              const url = URL.createObjectURL(blob);
+              link.setAttribute("href", url);
+              link.setAttribute("download", "USER_INPUT.csv");
+  
+              // Append the link to the document and trigger the click to download the file
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+          }
+      }
+  
+      // Add event listener for form submission
+      document.getElementById("feedback-form").addEventListener("submit", function(event) {
+          event.preventDefault(); // Prevent default form submission
+          generateCSV(); // Generate and download the CSV
+      });
+  </script>
+  
 </body>
 </html>
