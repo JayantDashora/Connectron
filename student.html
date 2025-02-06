@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teachify - Students</title>
+    <link rel="stylesheet" href="style1.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sentiment/5.0.2/sentiment.min.js"></script>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f4f4f4;
+        }
+
+        .form-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            width: 80%;
+            max-width: 800px;
+            margin-top: 50px;
+        }
+
+        .feedback-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .feedback-form label {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .feedback-form select,
+        .feedback-form input,
+        .feedback-form textarea {
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 100%;
+        }
+
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 14px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+
+        .sentiment-result {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav class="navbar">
+        <h2 class="logo"><a href="#">TEACHIFY</a></h2>
+        <input type="checkbox" id="menu-toggler">
+        <label for="menu-toggler" id="hamburger-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="24px" height="24px">
+                <path d="M0 0h24v24H0z" fill="none"/>
+                <path d="M3 18h18v-2H3v2zm0-5h18V11H3v2zm0-7v2h18V6H3z"/>
+            </svg>
+        </label>
+        <ul class="all-links">
+            <li><a href="index.html">Home</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="section-container">
+    <section class="form-section">
+        <h3>Provide Your Feedback</h3>
+        <form class="feedback-form" id="feedback-form">
+            
+            <!-- Mode of Teaching -->
+            <label for="modeOfTeaching">Please select the mode of teaching:</label>
+            <select id="modeOfTeaching" name="modeOfTeaching">
+                <option value="online">Online</option>
+                <option value="offline">Offline</option>
+                <option value="hybrid">Hybrid</option>
+                <option value="self-paced">Self-paced</option>
+                <option value="flipped">Flipped</option>
+                <option value="one-on-one">One-on-one</option>
+                <option value="group">Group</option>
+            </select>
+
+            <!-- Subject -->
+            <label for="subject">Please mention the subject taught:</label>
+            <input type="text" id="subject" name="subject" required>
+
+            <!-- Teacher's Clarity -->
+            <label>How clear was the teacher's explanation?</label>
+            <select id="clarity" name="clarity">
+                <option value="very_clear">Very Clear</option>
+                <option value="somewhat_clear">Somewhat Clear</option>
+                <option value="neutral">Neutral</option>
+                <option value="somewhat_unclear">Somewhat Unclear</option>
+                <option value="very_unclear">Very Unclear</option>
+            </select>
+
+            <!-- Engagement Level -->
+            <label>How engaging was the teaching method?</label>
+            <select id="engagement" name="engagement">
+                <option value="very_engaging">Very Engaging</option>
+                <option value="somewhat_engaging">Somewhat Engaging</option>
+                <option value="neutral">Neutral</option>
+                <option value="somewhat_boring">Somewhat Boring</option>
+                <option value="very_boring">Very Boring</option>
+            </select>
+
+            <!-- Pace of Teaching -->
+            <label>Was the pace of teaching appropriate?</label>
+            <select id="pace" name="pace">
+                <option value="too_slow">Too Slow</option>
+                <option value="just_right">Just Right</option>
+                <option value="too_fast">Too Fast</option>
+            </select>
+
+            <!-- Student Interaction -->
+            <label>Did the teacher encourage student interaction?</label>
+            <input type="radio" id="interaction_yes" name="interaction" value="yes">
+            <label for="interaction_yes">Yes</label>
+            <input type="radio" id="interaction_no" name="interaction" value="no">
+            <label for="interaction_no">No</label>
+
+            <!-- Overall Written Feedback -->
+            <label for="writtenFeedback">Please provide your overall written feedback:</label>
+            <textarea id="writtenFeedback" name="writtenFeedback" rows="4" required></textarea>
+
+            <button type="submit" class="button">Submit Feedback</button>
+        </form>
+
+        <div class="sentiment-result" id="sentiment-result"></div>
+    </section>
+</main>
+
+<script>
+    document.getElementById("feedback-form").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const feedbackText = document.getElementById("writtenFeedback").value;
+        const sentiment = new Sentiment();
+        const result = sentiment.analyze(feedbackText);
+        const score = result.score;
+
+        let sentimentText = "";
+        if (score > 0) {
+            sentimentText = "😊 Positive Sentiment!";
+        } else if (score < 0) {
+            sentimentText = "😠 Negative Sentiment!";
+        } else {
+            sentimentText = "😐 Neutral Sentiment.";
+        }
+
+        document.getElementById("sentiment-result").innerText = sentimentText;
+    });
+</script>
+
+</body>
+</html>

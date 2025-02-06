@@ -6,6 +6,22 @@
     <title>Teachify - Students</title>
     <link rel="stylesheet" href="style1.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <!-- Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        /* Centering the graph and increasing its size */
+        .graph-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 600px; /* Adjust the height of the section for a bigger graph */
+        }
+
+        #graph {
+            width: 90%; /* Increase the width to make the graph bigger */
+            height: 90%; /* Increase the height to make the graph bigger */
+        }
+    </style>
 </head>
 <body>
 
@@ -28,95 +44,120 @@
     <main class="section-container">
         <!-- Left (Graph) Section -->
         <section class="graph-section">
-            <canvas id="lineChart"></canvas> 
+            <!-- Plotly Graph will be rendered here -->
+            <div id="graph"></div>
         </section>
 
         <!-- Right (Buttons) Section -->
         <section class="buttons-section">
             <div class="button-container">
-                <button class="button">Attendance</button>
-                <button class="button">Performance</button>
-                <button class="button">Grades</button>
-                <button class="button">Assignments</button>
-                <button class="button">Participation</button>
-                <button class="button">Test Scores</button>
-                <button class="button">Engagement</button>
-                <button class="button">Behavior</button>
-                <button class="button">Feedback</button>
-                <button class="button">Overall Rating</button>
+                <button class="button" onclick="updateGraph('attendance.csv')">Attendance</button>
+                <button class="button" onclick="updateGraph('performance.csv')">Performance</button>
+                <button class="button" onclick="updateGraph('grades.csv')">Grades</button>
+                <button class="button" onclick="updateGraph('assignments.csv')">Assignments</button>
+                <button class="button" onclick="updateGraph('participation.csv')">Participation</button>
+                <button class="button" onclick="updateGraph('test_scores.csv')">Test Scores</button>
+                <button class="button" onclick="updateGraph('engagement.csv')">Engagement</button>
+                <button class="button" onclick="updateGraph('behavior.csv')">Behavior</button>
+                <button class="button" onclick="updateGraph('feedback.csv')">Feedback</button>
+                <button class="button" onclick="updateGraph('overall_rating.csv')">Overall Rating</button>
             </div>
         </section>
     </main>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js">
 
-
-
-
+    <script>
         // Function to load CSV data
         function loadCSVData(url, callback) {
-          fetch(url)
-            .then(response => response.text())
-            .then(data => callback(data))
-            .catch(error => console.error('Error loading the CSV file:', error));
+            fetch(url)
+                .then(response => response.text())
+                .then(data => callback(data))
+                .catch(error => console.error('Error loading the CSV file:', error));
         }
-  
+
         // Function to parse CSV data and return chart labels and values
         function parseCSVData(csvData) {
-          const rows = csvData.split("\n");
-          const labels = [];
-          const values = [];
-  
-          // Assuming the CSV has headers, we skip the first row
-          rows.forEach((row, index) => {
-            if (index > 0) {
-              const columns = row.split(",");
-              labels.push(columns[0]); // First column for labels
-              values.push(parseFloat(columns[1])); // Second column for values (numeric)
-            }
-          });
-  
-          return { labels, values };
-        }
-  
-        // Initialize the graph
-        function initGraph(csvData) {
-          const { labels, values } = parseCSVData(csvData);
-  
-          // Create the chart
-          const ctx = document.getElementById('lineChart').getContext('2d');
-          const chart = new Chart(ctx, {
-            type: 'line',
-            data: {
-              labels: labels, // X-axis labels
-              datasets: [{
-                label: 'Data from CSV',
-                data: values, // Y-axis values
-                borderColor: 'rgba(75, 192, 192, 1)',
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                fill: true,
-              }]
-            },
-            options: {
-              responsive: true,
-              scales: {
-                x: {
-                  title: {
-                    display: true,
-                    text: 'X-Axis Label' // Customize based on CSV
-                  }
-                },
-                y: {
-                  title: {
-                    display: true,
-                    text: 'Y-Axis Label' // Customize based on CSV
-                  }
+            const rows = csvData.split("\n");
+            const labels = [];
+            const values = [];
+
+            // Assuming the CSV has headers, we skip the first row
+            rows.forEach((row, index) => {
+                if (index > 0 && row.trim() !== "") {
+                    const columns = row.split(",");
+                    labels.push(columns[0].trim()); // First column for labels
+                    values.push(parseFloat(columns[1].trim())); // Second column for values (numeric)
                 }
-              }
-            }
-          });
+            });
+
+            return { labels, values };
         }
-        // Load the CSV data and initialize the graph
-        loadCSVData('plot.csv', initGraph);
-      </script>
+
+        // Initialize the Plotly graph
+        function initGraph(csvData) {
+            const { labels, values } = parseCSVData(csvData);
+
+            // Create the plotly chart
+            const trace = {
+                x: labels, // X-axis labels
+                y: values, // Y-axis values
+                type: 'scatter', // Line chart type
+                mode: 'lines+markers', // Show both lines and markers
+                name: 'Data from CSV'
+            };
+
+            const layout = {
+                title: 'Data Visualization from CSV',
+                xaxis: {
+                    title: 'Students', // Customize based on CSV
+                    titlefont: {
+                        family: 'Arial, sans-serif', // Same font as used in the page
+                        size: 16, // Font size for the x-axis label
+                    },
+                    tickfont: {
+                        family: 'Arial, sans-serif', // Same font as used in the page
+                        size: 12, // Font size for the x-axis ticks
+                    }
+                },
+                yaxis: {
+                    title: 'Values', // Customize based on CSV
+                    titlefont: {
+                        family: 'Arial, sans-serif', // Same font as used in the page
+                        size: 16, // Font size for the y-axis label
+                    },
+                    tickfont: {
+                        family: 'Arial, sans-serif', // Same font as used in the page
+                        size: 12, // Font size for the y-axis ticks
+                    }
+                },
+                margin: {
+                    l: 40, // Left margin
+                    r: 40, // Right margin
+                    t: 40, // Top margin
+                    b: 40  // Bottom margin
+                },
+                font: {
+                    family: 'Arial, sans-serif', // Same font as used in the page
+                    size: 14, // Font size for title and labels
+                    color: '#333' // Font color
+                }
+            };
+
+            const data = [trace];
+
+            // Render the chart in the 'graph' division
+            Plotly.newPlot('graph', data, layout);
+        }
+
+        // Function to update the graph with new CSV data
+        function updateGraph(csvFile) {
+            loadCSVData(csvFile, initGraph);
+        }
+
+        // Load the initial CSV data and initialize the graph
+        document.addEventListener('DOMContentLoaded', function () {
+            loadCSVData('attendance.csv', initGraph); // Default CSV file
+        });
+    </script>
+
 </body>
 </html>
